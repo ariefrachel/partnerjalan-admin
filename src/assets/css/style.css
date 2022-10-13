@@ -1,0 +1,42 @@
+.btn-primary, .btn-success {
+    background-color: #55C9D3;
+    border:none;
+}
+
+.btn-edit {
+    border:1px solid #F2A73B;
+    background:none;
+    color:#F2A73B;
+}
+
+.btn-delete {
+    border:1px solid #DC3545;
+    background:none;
+    color:#DC3545;
+}
+
+.partnerLogo {
+    height:150px;
+    padding: 21px;
+}
+
+.partnerContent {
+    padding:21px;
+}
+.kontakContent {
+    padding:7px;
+}
+
+.testiImage {
+    height:200px;
+    overflow:hidden;
+}
+
+.kontakLogo img {
+    width:32px;
+    height:32px;
+}
+
+.kontakList {
+    padding:14px;
+}
