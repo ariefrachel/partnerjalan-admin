@@ -15,16 +15,38 @@
           ref="modal-tour"
           centered
           hide-footer
-          title="Tambah Visi dan Misi"
+          title="Tambah Tempat Wisata"
         >
           <form @submit.prevent="add">
-            <div class="d-block text-center">
-              <input
-                class="form-control"
-                type="text"
-                v-model="form.tempatwisata"
-              />
+            <div class="d-block">
+              <b-form-group label="Nama Kota" label-cols-lg="4">
+                <b-form-select
+                  class="form-select"
+                  v-model="form.kotaid"
+                  :options="options"
+                >
+                  <template #first>
+                    <b-form-select-option :value="null" disabled>
+                      Pilih Kota
+                    </b-form-select-option>
+                  </template>
+                  <b-form-select-option
+                    :key="kota.id"
+                    v-for="kota in kota"
+                    :value="kota.id"
+                    >{{ kota.kota }}</b-form-select-option
+                  >
+                </b-form-select>
+              </b-form-group>
+              <br />
+              <b-form-group label="Nama Tempat Wisata" label-cols-lg="4">
+                <b-form-input
+                  v-model="form.tempatwisata"
+                  placeholder="Tempat wisata"
+                ></b-form-input>
+              </b-form-group>
             </div>
+            <br />
             <b-button class="mt-3" id="hide-btn" @click="hideModal"
               >Batal</b-button
             >
@@ -59,13 +81,13 @@
                     {{ wisata.tempatwisata }}
                   </div>
                   <div class="col-md-2 col-3">
-                    <button class="btn" @click="edit(wisatas)">
+                    <button class="btn" @click="edit(wisata)">
                       <i
                         class="fas fa-pen-to-square"
                         style="color: #f2a73b"
                       ></i>
                     </button>
-                    <button class="btn" @click="del(wisatas)">
+                    <button class="btn" @click="del(wisata)">
                       <i class="fas fa-trash" style="color: #dc3545"></i>
                     </button>
                   </div>
@@ -86,14 +108,17 @@ export default {
   data() {
     return {
       form: {
+        kotaid: [],
         tempatwisata: "",
       },
       wisata: "",
+      kota: "",
       updateSubmit: false,
     };
   },
   mounted() {
     this.load();
+    this.loadkota();
   },
   methods: {
     showModal() {
@@ -117,54 +142,59 @@ export default {
         console.log(e);
       }
     },
-    // async add() {
-    //   try {
-    //     await axios.post(
-    //       this.$pathApi + "api/dashboard/fasilitas/fasilitastour",
-    //       this.form
-    //     );
-    //     this.hideModal();
-    //     this.load();
-    //     this.form.fasilitastour = "";
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // },
-    // edit(editTour) {
-    //   this.showModal();
-    //   this.updateSubmit = true;
-    //   this.form.id = editTour.id;
-    //   this.form.fasilitastour = editTour.fasilitastour;
-    // },
-    // async update(form) {
-    //   try {
-    //     await axios.patch(
-    //       this.$pathApi + "api/dashboard/fasilitas/fasilitastour/" + form.id,
-    //       {
-    //         fasilitastour: this.form.fasilitastour,
-    //       }
-    //     );
-    //     this.hideModal();
-    //     this.load();
-    //     this.form.id = "";
-    //     this.form.fasilitastour = "";
-    //     this.updateSubmit = false;
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // },
-    // async del(delTour) {
-    //   try {
-    //     await axios.delete(
-    //       this.$pathApi + "api/dashboard/fasilitas/fasilitastour/" + delTour.id
-    //     );
-    //     this.load();
-    //     let index = this.tour.indexOf(delTour.fasilitastour);
-    //     this.visi.splice(index, 1);
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // },
+    async loadkota() {
+      try {
+        const kota = await axios.get(this.$pathApi + "api/dashboard/kota", {
+          headers: {
+            "ngrok-skip-browser-warning": 1,
+          },
+        });
+
+        this.kota = kota.data;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async add() {
+      try {
+        await axios.post(this.$pathApi + "api/dashboard/wisata", this.form);
+        this.hideModal();
+        this.load();
+        this.form.tempatwisata = "";
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    edit(editTempat) {
+      this.showModal();
+      this.updateSubmit = true;
+      this.form.kotaid = editTempat.kotaid;
+      this.form.tempatwisata = editTempat.tempatwisata;
+    },
+    async update(form) {
+      try {
+        await axios.patch(this.$pathApi + "api/dashboard/wisata/" + form.id, {
+          tempatwisata: this.form.tempatwisata,
+        });
+        this.hideModal();
+        this.load();
+        this.form.kotaid = "";
+        this.form.tempatwisata = "";
+        this.updateSubmit = false;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    del(wisata) {
+      if (confirm("Apa kamu yakin ingin menghapus ?")) {
+        axios
+          .delete(this.$pathApi + "api/dashboard/wisata/" + wisata.id)
+          .then((res) => {
+            this.load();
+            console.log(res);
+          });
+      }
+    },
   },
   components: { SidebarNav },
 };

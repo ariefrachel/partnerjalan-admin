@@ -82,9 +82,6 @@
           </div>
           <div class="card-body">
             <div style="float: right; margin-top: 7px">
-              <button class="btn btn-edit" style="margin-right: 14px">
-                Edit
-              </button>
               <button class="btn btn-delete" @click="del(partner)">
                 Hapus
               </button>

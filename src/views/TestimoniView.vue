@@ -20,7 +20,7 @@
             </div>
             <b-form-group label="Caption Testimoni" label-cols-lg="4">
               <b-form-input
-                v-model="caption"
+                v-model="form.caption"
                 placeholder="Caption"
               ></b-form-input>
             </b-form-group>
@@ -39,11 +39,11 @@
                 />
               </b-input-group>
             </b-form-group>
-            <div v-if="previewImage">
+            <div v-if="form.previewImage">
               <div>
                 <img
                   class="preview my-3"
-                  :src="previewImage"
+                  :src="form.previewImage"
                   alt=""
                   style="width: 50%"
                 />
@@ -56,9 +56,17 @@
               >
               <b-button
                 class="btn btn-primary mt-3"
-                :disabled="!currentImage"
+                :disabled="!form.currentImage"
                 @click="upload"
+                v-show="!updateSubmit"
                 >Tambah Data</b-button
+              >
+              <b-button
+                class="btn btn-primary mt-3"
+                :disabled="!form.currentImage"
+                @click="update(form)"
+                v-show="updateSubmit"
+                >Update Data</b-button
               >
             </div>
           </div>
@@ -82,7 +90,11 @@
           <div class="card-body">
             <p>{{ testi.caption }}</p>
             <div style="float: right; margin-top: 7px">
-              <button class="btn btn-edit" style="margin-right: 14px">
+              <button
+                class="btn btn-edit"
+                style="margin-right: 14px"
+                @click="edit(testi)"
+              >
                 Edit
               </button>
               <button class="btn btn-delete" @click="del(testi)">Hapus</button>
@@ -95,6 +107,7 @@
 </template>
 <script>
 import UploadService from "../services/UploadFilesService";
+import UpdateService from "../services/UpdateFilesService";
 import http from "../http-common";
 import SidebarNav from "@/components/SidebarNav.vue";
 export default {
@@ -104,13 +117,15 @@ export default {
   },
   data() {
     return {
-      currentImage: undefined,
-      previewImage: undefined,
-
+      form: {
+        currentImage: undefined,
+        previewImage: undefined,
+        caption: "",
+      },
       message: "",
-      caption: "",
       testimoni: [],
       pathTesti: this.$pathApi,
+      updateSubmit: false,
     };
   },
   mounted() {
@@ -124,20 +139,20 @@ export default {
       this.$refs["modal-testi"].hide();
     },
     selectImage() {
-      this.currentImage = this.$refs.file.files.item(0);
-      this.previewImage = URL.createObjectURL(this.currentImage);
+      this.form.currentImage = this.$refs.file.files.item(0);
+      this.form.previewImage = URL.createObjectURL(this.form.currentImage);
       this.message = "";
     },
     upload() {
-      UploadService.uploadTestimoni(this.currentImage, this.caption)
+      UploadService.uploadTestimoni(this.form.currentImage, this.form.caption)
         .then((response) => {
           this.message = response.data.message;
           this.message = "Image successfully uploaded !";
           this.hideModal();
           this.load();
           this.message = "";
-          this.caption = "";
-          this.previewImage = undefined;
+          this.form.caption = "";
+          this.form.previewImage = undefined;
         })
         .catch((err) => {
           this.message = "Could not upload the image!" + err;
@@ -156,6 +171,33 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    edit(editTestimoni) {
+      this.showModal();
+      this.updateSubmit = true;
+      this.form.id = editTestimoni.id;
+      this.form.caption = editTestimoni.caption;
+      this.form.previewImage = editTestimoni.previewImage;
+    },
+    update(form) {
+      UpdateService.updateTestimoni(
+        form.id,
+        this.form.currentImage,
+        this.form.caption
+      )
+        .then((response) => {
+          this.message = response.data.message;
+          this.message = "Image successfully uploaded !";
+          this.hideModal();
+          this.load();
+          this.message = "";
+          this.form.caption = "";
+          this.form.previewImage = undefined;
+        })
+        .catch((err) => {
+          this.message = "Could not upload the image!" + err;
+          this.form.currentImage = undefined;
+        });
     },
     del(testi) {
       if (confirm("Apa kamu yakin ingin menghapus ?")) {

@@ -18,7 +18,12 @@
         <form @submit.prevent="add">
           <div class="d-block text-center">
             <input class="form-control" type="hidden" v-model="form.id" />
-            <input class="form-control" type="text" v-model="form.visimisi" />
+            <textarea
+              class="form-control"
+              id="floatingTextarea2"
+              style="height: 200px"
+              v-model="form.visimisi"
+            ></textarea>
           </div>
           <b-button class="mt-3" id="hide-btn" @click="hideModal"
             >Batal</b-button
@@ -44,21 +49,28 @@
       </b-modal>
     </div>
     <div class="inputabout">
-      <div class="row" :key="visi.id" v-for="visi in visi">
-        <div class="col-12">
-          <div class="card mt-2">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-10 col-9">
-                  {{ visi.visimisi }}
-                </div>
-                <div class="col-md-2 col-3">
-                  <button class="btn" @click="edit(visi)">
-                    <i class="fas fa-pen-to-square" style="color: #f2a73b"></i>
-                  </button>
-                  <button class="btn" @click="del(visi)">
-                    <i class="fas fa-trash" style="color: #dc3545"></i>
-                  </button>
+      <div>
+        <div class="row" v-for="vis in visi.visimisi" :key="vis.id">
+          <div class="col-12">
+            <div class="card mt-2">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-10 col-9">
+                    <div>
+                      {{ vis.visimisi }}
+                    </div>
+                  </div>
+                  <div class="col-md-2 col-3">
+                    <button class="btn" @click="edit(vis)">
+                      <i
+                        class="fas fa-pen-to-square"
+                        style="color: #f2a73b"
+                      ></i>
+                    </button>
+                    <button class="btn" @click="del(vis)">
+                      <i class="fas fa-trash" style="color: #dc3545"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -78,7 +90,7 @@ export default {
         id: "",
         visimisi: "",
       },
-      visi: "",
+      visi: [],
       updateSubmit: false,
     };
   },
@@ -95,7 +107,7 @@ export default {
     async load() {
       try {
         const loadvisi = await axios.get(
-          this.$pathApi + "api/user/about/visimisi",
+          this.$pathApi + "api/dashboard/infoperusahaan",
           {
             headers: {
               "ngrok-skip-browser-warning": 1,

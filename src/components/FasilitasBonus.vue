@@ -18,7 +18,12 @@
         <form @submit.prevent="add">
           <div class="d-block text-center">
             <input class="form-control" type="hidden" v-model="form.id" />
-            <input class="form-control" type="text" v-model="form.bonus" />
+            <textarea
+              class="form-control"
+              id="floatingTextarea2"
+              style="height: 100px"
+              v-model="form.bonus"
+            ></textarea>
           </div>
           <b-button class="mt-3" id="hide-btn" @click="hideModal"
             >Batal</b-button
@@ -45,7 +50,7 @@
     </div>
 
     <div class="inputabout">
-      <div class="row" :key="tour.id" v-for="tour in tour">
+      <div class="row" :key="tour.id" v-for="tour in tour.bonus">
         <div class="col-12">
           <div class="card mt-1">
             <div class="card-body">
@@ -96,7 +101,7 @@ export default {
     async load() {
       try {
         const loadtour = await axios.get(
-          this.$pathApi + "api/user/fasilitasuser/bonus",
+          this.$pathApi + "api/dashboard/fasilitas",
           {
             headers: {
               "ngrok-skip-browser-warning": 1,

@@ -60,11 +60,10 @@ class UploadFilesService {
       },
     });
   }
-  uploadPaket(file,kotaid,namapaket,hari,harga) {
+  uploadPaket(file,namapaket,hari,harga) {
     let formDataPaket = new FormData();
 
     formDataPaket.append("file", file);
-    formDataPaket.append("kotaid", kotaid)
     formDataPaket.append("namapaket", namapaket)
     formDataPaket.append("hari", hari)
     formDataPaket.append("harga", harga)

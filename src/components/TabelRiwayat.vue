@@ -21,7 +21,7 @@
           <td>{{ riwayat.email }}</td>
           <td>{{ riwayat.datetime }}</td>
           <td>
-            <button class="btn">
+            <button class="btn" @click="edit(riwayat)">
               <i
                 class="fas fa-pen-to-square"
                 style="color: #f2a73b"
@@ -33,6 +33,33 @@
         </tr>
       </tbody>
     </table>
+    <b-modal
+      ref="modal-riwayat"
+      centered
+      hide-footer
+      title="Tambah Visi dan Misi"
+    >
+      <form>
+        <div class="d-block text-center">
+          <b-form-group label="Nama Lengkap" label-cols-lg="6">
+            <b-form-input type="text" v-model="form.namalengkap"></b-form-input>
+          </b-form-group>
+          <b-form-group label="No. Telepon" label-cols-lg="6">
+            <b-form-input type="text" v-model="form.notelp"></b-form-input>
+          </b-form-group>
+          <b-form-group label="Email" label-cols-lg="6">
+            <b-form-input type="text" v-model="form.email"></b-form-input>
+          </b-form-group>
+          <b-form-group label="Email" label-cols-lg="6">
+            <b-form-input type="date" v-model="form.datetime"></b-form-input>
+          </b-form-group>
+        </div>
+        <b-button class="mt-3" id="hide-btn" @click="hideModal">Batal</b-button>
+        <b-button class="mt-3 ms-3" type="submit" variant="primary" block
+          >Ubah Data</b-button
+        >
+      </form>
+    </b-modal>
     <!-- <b-table
       id="tabel-pemesanan"
       :items="pemesanan"
@@ -57,10 +84,22 @@ export default {
     return {
       // perPage: 3,
       // currentPage: 1,
+      form: {
+        namalengkap: "",
+        notelp: "",
+        email: "",
+        datetime: "",
+      },
       pemesanan: [],
     };
   },
   methods: {
+    showModal() {
+      this.$refs["modal-riwayat"].show();
+    },
+    hideModal() {
+      this.$refs["modal-riwayat"].hide();
+    },
     async load() {
       try {
         const loadriwayat = await axios.get(
@@ -76,6 +115,14 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    edit(editRiwayat) {
+      this.showModal();
+      this.form.id = editRiwayat.id;
+      this.form.namalengkap = editRiwayat.namalengkap;
+      this.form.notelp = editRiwayat.notelp;
+      this.form.email = editRiwayat.email;
+      this.form.datetime = editRiwayat.datetime;
     },
   },
   mounted() {
