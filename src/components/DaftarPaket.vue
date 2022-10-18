@@ -43,15 +43,17 @@
                   </template>
                   <b-form-select-option
                     :key="tempat.id"
-                    v-for="tempat in tempatwisata"
+                    v-for="tempat in tempat"
                     :value="tempat.id"
-                    >{{ tempat.tempatwisata }}</b-form-select-option
+                    >{{ tempat.tempatwisata }} ({{
+                      tempat.kotaid
+                    }})</b-form-select-option
                   >
                 </b-form-select>
               </b-form-group>
             </div>
             <br />
-            <b-button class="mt-3" id="hide-btn" @click="hideModal"
+            <b-button class="mt-3" id="hide-btn" @click="hideModal3"
               >Batal</b-button
             >
             <b-button class="mt-3 ms-3" type="submit" variant="primary" block
@@ -85,15 +87,48 @@
 
             <b-form-group label="Nama Paket" label-cols-lg="6">
               <b-form-input
-                v-model="namapaket"
+                v-model="formPaket.namapaket"
                 placeholder="Nama Paket"
               ></b-form-input>
             </b-form-group>
-            <b-form-group label="Hari" label-cols-lg="6">
+            <!-- <b-form-group label="Hari" label-cols-lg="6">
               <b-form-input v-model="hari" placeholder="Hari"></b-form-input>
+            </b-form-group> -->
+            <b-form-group label="Hari" label-cols-lg="4">
+              <b-form-select class="form-select" v-model="formPaket.hari">
+                <template #first>
+                  <b-form-select-option :value="null" disabled>
+                    Pilih Hari
+                  </b-form-select-option>
+                </template>
+                <b-form-select-option value="Paket 1 Hari"
+                  >Paket 1 Hari</b-form-select-option
+                >
+                <b-form-select-option value="Paket 2 Hari"
+                  >Paket 2 Hari</b-form-select-option
+                >
+                <b-form-select-option value="Paket 3 Hari"
+                  >Paket 3 Hari</b-form-select-option
+                >
+                <b-form-select-option value="Paket 4 Hari"
+                  >Paket 4 Hari</b-form-select-option
+                >
+                <b-form-select-option value="Paket 5 Hari"
+                  >Paket 5 Hari</b-form-select-option
+                >
+                <b-form-select-option value="Paket 6 Hari"
+                  >Paket 6 Hari</b-form-select-option
+                >
+                <b-form-select-option value="Paket 7 Hari"
+                  >Paket 7 Hari</b-form-select-option
+                >
+              </b-form-select>
             </b-form-group>
             <b-form-group label="Harga" label-cols-lg="6">
-              <b-form-input v-model="harga" placeholder="Harga"></b-form-input>
+              <b-form-input
+                v-model="formPaket.harga"
+                placeholder="Harga"
+              ></b-form-input>
             </b-form-group>
             <br />
             <b-form-group
@@ -110,11 +145,11 @@
                 />
               </b-input-group>
             </b-form-group>
-            <div v-if="previewImage">
+            <div v-if="formPaket.previewImage">
               <div>
                 <img
                   class="preview my-3"
-                  :src="previewImage"
+                  :src="formPaket.previewImage"
                   alt=""
                   style="width: 50%"
                 />
@@ -127,9 +162,17 @@
               >
               <b-button
                 class="btn btn-primary mt-3"
-                :disabled="!currentImage"
+                :disabled="!formPaket.currentImage"
                 @click="upload"
-                >Tambah Data</b-button
+                v-show="!updateSubmit"
+                >Tambah Paket</b-button
+              >
+              <b-button
+                class="btn btn-primary mt-3"
+                :disabled="!formPaket.currentImage"
+                @click="updatePkt(formPaket)"
+                v-show="updateSubmit"
+                >Update Paket</b-button
               >
             </div>
           </div>
@@ -171,14 +214,19 @@
           <div class="col-lg-2 col-12">
             <div class="row">
               <button
-                class="col-6 btn btn-outline-warning"
+                class="btn btn-outline-warning"
                 @click="edit(paketwisata)"
               >
                 Edit Kota
               </button>
-              <br />
               <button
-                class="col-6 btn btn-outline-danger"
+                class="btn btn-outline-warning mt-3"
+                @click="editPaket(paketwisata)"
+              >
+                Edit Paket
+              </button>
+              <button
+                class="btn btn-outline-danger mt-3"
                 @click="del(paketwisata)"
               >
                 Hapus
@@ -230,6 +278,7 @@
 
 <script>
 import UploadService from "../services/UploadFilesService";
+import UpdateService from "../services/UpdateFilesService";
 import axios from "axios";
 export default {
   name: "App",
@@ -243,16 +292,20 @@ export default {
         id: [],
         kotaid: [],
       },
-      currentImage: undefined,
-      previewImage: undefined,
+      formPaket: {
+        currentImage: undefined,
+        previewImage: undefined,
+        namapaket: "",
+        hari: [],
+        harga: "RP. 000 - 000 / pack",
+      },
+
       message: "",
-      namapaket: "",
-      hari: "",
-      harga: "",
       paket: [],
       kota: "",
-      tempatwisata: "",
+      tempat: "",
       pathContact: this.$pathApi,
+      updateSubmit: false,
     };
   },
   mounted() {
@@ -280,16 +333,18 @@ export default {
       this.$refs["modal-wisata"].hide();
     },
     selectImage() {
-      this.currentImage = this.$refs.file.files.item(0);
-      this.previewImage = URL.createObjectURL(this.currentImage);
+      this.formPaket.currentImage = this.$refs.file.files.item(0);
+      this.formPaket.previewImage = URL.createObjectURL(
+        this.formPaket.currentImage
+      );
       this.message = "";
     },
     upload() {
       UploadService.uploadPaket(
-        this.currentImage,
-        this.namapaket,
-        this.hari,
-        this.harga
+        this.formPaket.currentImage,
+        this.formPaket.namapaket,
+        this.formPaket.hari,
+        this.formPaket.harga
       )
         .then((response) => {
           this.message = response.data.message;
@@ -297,14 +352,14 @@ export default {
           this.hideModal();
           this.load();
           this.message = "";
-          this.namapaket = "";
-          this.hari = "";
-          this.harga = "";
-          this.previewImage = undefined;
+          this.formPaket.namapaket = "";
+          this.formPaket.hari = "";
+          this.formPaket.harga = "RP. 000 - 000 / pack";
+          this.formPaket.previewImage = undefined;
         })
         .catch((err) => {
           this.message = "Could not upload the image!" + err;
-          this.currentImage = undefined;
+          this.formPaket.currentImage = undefined;
         });
     },
 
@@ -312,6 +367,38 @@ export default {
       this.showModal2();
       this.form.id = editKota.id;
       this.form.kotaid = editKota.kotaid;
+    },
+    editPaket(editpaket) {
+      this.showModal();
+      this.updateSubmit = true;
+      this.formPaket.id = editpaket.id;
+      this.formPaket.namapaket = editpaket.namapaket;
+      this.formPaket.hari = editpaket.hari;
+      this.formPaket.harga = editpaket.harga;
+      this.formPaket.currentImage = editpaket.currentImage;
+    },
+    updatePkt(form) {
+      UpdateService.updatePaket(
+        form.id,
+        this.formPaket.currentImage,
+        this.formPaket.namapaket,
+        this.formPaket.hari,
+        this.formPaket.harga
+      )
+        .then((response) => {
+          this.message = response.data.message;
+          this.message = "Image successfully uploaded !";
+          this.hideModal();
+          this.load();
+          this.formPaket.namapaket = "";
+          this.formPaket.hari = "";
+          this.formPaket.harga = "RP. 000 - 000 / pack";
+          this.formPaket.currentImage = undefined;
+        })
+        .catch((err) => {
+          this.message = "Could not upload the image!" + err;
+          this.formPaket.currentImage = undefined;
+        });
     },
     async update() {
       try {
@@ -361,7 +448,7 @@ export default {
           },
         });
 
-        this.tempatwisata = wisata.data;
+        this.tempat = wisata.data;
       } catch (e) {
         console.log(e);
       }
@@ -372,7 +459,7 @@ export default {
           this.$pathApi + "api/dashboard/paketwisata",
           this.formWisata
         );
-        this.hideModal3();
+        alert("Tempat wisata berhasil ditambahkan ke dalam paket");
         this.load();
       } catch (e) {
         console.log(e);

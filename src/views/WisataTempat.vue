@@ -79,6 +79,7 @@
                 <div class="row">
                   <div class="col-md-10 col-9">
                     {{ wisata.tempatwisata }}
+                    <span style="color: #55c9d3"> ({{ wisata.kotaid }}) </span>
                   </div>
                   <div class="col-md-2 col-3">
                     <button class="btn" @click="edit(wisata)">

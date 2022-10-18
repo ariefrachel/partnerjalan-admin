@@ -78,7 +78,7 @@
               <button class="btn btn-edit" style="margin-right: 14px">
                 Edit
               </button>
-              <button class="btn btn-delete">Hapus</button>
+              <button class="btn btn-delete" @click="del(media)">Hapus</button>
             </div>
           </div>
         </div>

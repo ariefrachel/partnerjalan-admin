@@ -18,7 +18,7 @@
             </div>
             <b-form-group label="Nama Kota" label-cols-lg="4">
               <b-form-input
-                v-model="namakota"
+                v-model="form.kota"
                 placeholder="Kota"
               ></b-form-input>
             </b-form-group>
@@ -37,11 +37,11 @@
                 />
               </b-input-group>
             </b-form-group>
-            <div v-if="previewImage">
+            <div v-if="form.previewImage">
               <div>
                 <img
                   class="preview my-3"
-                  :src="previewImage"
+                  :src="form.previewImage"
                   alt=""
                   style="width: 50%"
                 />
@@ -54,9 +54,17 @@
               >
               <b-button
                 class="btn btn-primary mt-3"
-                :disabled="!currentImage"
+                :disabled="!form.currentImage"
                 @click="upload"
+                v-show="!updateSubmit"
                 >Tambah Data</b-button
+              >
+              <b-button
+                class="btn btn-primary mt-3"
+                :disabled="!form.currentImage"
+                @click="update(form)"
+                v-show="updateSubmit"
+                >Update Data</b-button
               >
             </div>
           </div>
@@ -85,7 +93,9 @@
                 </div>
                 <div class="row justify-content-end mt-2">
                   <div class="col-4">
-                    <button class="btn btn-edit">Edit</button>
+                    <button class="btn btn-edit" @click="edit(kategori)">
+                      Edit
+                    </button>
                   </div>
                   <div class="col-4">
                     <button class="btn btn-delete" @click="del(kategori)">
@@ -103,6 +113,7 @@
 </template>
   <script>
 import UploadService from "../services/UploadFilesService";
+import UpdateService from "../services/UpdateFilesService";
 import SidebarNav from "@/components/SidebarNav.vue";
 import http from "../http-common";
 export default {
@@ -112,10 +123,14 @@ export default {
   },
   data() {
     return {
-      currentImage: undefined,
-      previewImage: undefined,
+      form: {
+        currentImage: undefined,
+        previewImage: undefined,
+        kota: "",
+      },
+
       kota: "",
-      namakota: "",
+      updateSubmit: false,
       pathImg: this.$pathApi,
     };
   },
@@ -130,24 +145,24 @@ export default {
       this.$refs["modal-kota"].hide();
     },
     selectImage() {
-      this.currentImage = this.$refs.file.files.item(0);
-      this.previewImage = URL.createObjectURL(this.currentImage);
+      this.form.currentImage = this.$refs.file.files.item(0);
+      this.form.previewImage = URL.createObjectURL(this.form.currentImage);
       this.message = "";
     },
     upload() {
-      UploadService.uploadKota(this.currentImage, this.namakota)
+      UploadService.uploadKota(this.form.currentImage, this.form.kota)
         .then((response) => {
           this.message = response.data.message;
           this.message = "Image successfully uploaded !";
           this.hideModal();
           this.load();
           this.message = "";
-          this.namakota = "";
-          this.previewImage = undefined;
+          this.form.kota = "";
+          this.form.previewImage = undefined;
         })
         .catch((err) => {
           this.message = "Could not upload the image!" + err;
-          this.currentImage = undefined;
+          this.form.currentImage = undefined;
         });
     },
     async load() {
@@ -162,6 +177,29 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    edit(editkota) {
+      this.showModal();
+      this.updateSubmit = true;
+      this.form.id = editkota.id;
+      this.form.kota = editkota.kota;
+      this.form.currentImage = editkota.currentImage;
+    },
+    update(form) {
+      UpdateService.updateKota(form.id, this.form.currentImage, this.form.kota)
+        .then((response) => {
+          this.message = response.data.message;
+          this.message = "Image successfully uploaded !";
+          this.hideModal();
+          this.load();
+          this.message = "";
+          this.form.kota = "";
+          this.form.currentImage = undefined;
+        })
+        .catch((err) => {
+          this.message = "Could not upload the image!" + err;
+          this.form.currentImage = undefined;
+        });
     },
     del(kota) {
       if (confirm("Apa kamu yakin ingin menghapus ?")) {
