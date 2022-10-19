@@ -24,6 +24,17 @@ class UploadFilesService {
       },
     });
   }
+  uploadTentangFoto(file) {
+    let formDataTentang = new FormData();
+
+    formDataTentang.append("file", file);
+
+    return http.post("api/dashboard/infoperusahaan/foto", formDataTentang, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      },
+    });
+  }
   uploadTestimoni(file,caption) {
     let formDataTestimoni = new FormData();
 

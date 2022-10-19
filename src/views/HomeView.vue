@@ -1,7 +1,7 @@
 <template>
   <div class="home" id="content">
     <SidebarNav />
-    <h1>This is an home page</h1>
+    <h2>Selamat Datang di Halaman Admin Partnerjalan</h2>
   </div>
 </template>
 <script>
