@@ -203,7 +203,7 @@
                   :key="twisata.id"
                   v-for="twisata in paketwisata.paketwisata"
                 >
-                  {{ twisata.wisata }}
+                  {{ twisata.wisata.tempatwisata }}
                 </li>
               </ul>
             </div>
