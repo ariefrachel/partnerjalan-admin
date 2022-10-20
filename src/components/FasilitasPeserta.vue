@@ -13,7 +13,7 @@
         ref="modal-peserta"
         centered
         hide-footer
-        title="Tambah Visi dan Misi"
+        title="Tambah Fasilitas Peserta"
       >
         <form @submit.prevent="add">
           <div class="d-block text-center">
@@ -105,12 +105,14 @@ export default {
           {
             headers: {
               "ngrok-skip-browser-warning": 1,
+              Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
         );
 
         this.tour = loadtour.data;
       } catch (e) {
+        this.$router.push("/login");
         console.log(e);
       }
     },
@@ -118,7 +120,12 @@ export default {
       try {
         await axios.post(
           this.$pathApi + "api/dashboard/fasilitas/fasilitaspeserta",
-          this.form
+          this.form,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
         );
         this.hideModal();
         this.load();
@@ -139,6 +146,11 @@ export default {
           this.$pathApi + "api/dashboard/fasilitas/fasilitaspeserta/" + form.id,
           {
             fasilitaspeserta: this.form.fasilitaspeserta,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
           }
         );
         this.hideModal();
@@ -155,7 +167,12 @@ export default {
         await axios.delete(
           this.$pathApi +
             "api/dashboard/fasilitas/fasilitaspeserta/" +
-            delTour.id
+            delTour.id,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
         );
         this.load();
         let index = this.tour.indexOf(delTour.fasilitaspeserta);

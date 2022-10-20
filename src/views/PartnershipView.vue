@@ -147,20 +147,28 @@ export default {
         const partnership = await http.get("api/user/partnership", {
           headers: {
             "ngrok-skip-browser-warning": 1,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
 
         this.partnership = partnership.data;
       } catch (e) {
+        this.$router.push("/login");
         console.log(e);
       }
     },
     del(partner) {
       if (confirm("Apa kamu yakin ingin menghapus ?")) {
-        http.delete("api/dashboard/partnership/" + partner.id).then((res) => {
-          this.load();
-          console.log(res);
-        });
+        http
+          .delete("api/dashboard/partnership/" + partner.id, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            this.load();
+            console.log(res);
+          });
       }
     },
   },

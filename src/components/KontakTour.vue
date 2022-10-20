@@ -19,7 +19,7 @@
             </div>
             <b-form-group label="Nama Kontak" label-cols-lg="4">
               <b-form-input
-                v-model="kontak"
+                v-model="form.contact"
                 placeholder="Kontak"
               ></b-form-input>
             </b-form-group>
@@ -38,11 +38,11 @@
                 />
               </b-input-group>
             </b-form-group>
-            <div v-if="previewImage">
+            <div v-if="form.previewImage">
               <div>
                 <img
                   class="preview my-3"
-                  :src="previewImage"
+                  :src="form.previewImage"
                   alt=""
                   style="width: 50%"
                 />
@@ -55,9 +55,17 @@
               >
               <b-button
                 class="btn btn-primary mt-3"
-                :disabled="!currentImage"
+                :disabled="!form.currentImage"
                 @click="upload"
-                >Tambah Data</b-button
+                v-show="!updateSubmit"
+                >Tambah Kontak</b-button
+              >
+              <b-button
+                class="btn btn-primary mt-3"
+                :disabled="!form.currentImage"
+                @click="update(form)"
+                v-show="updateSubmit"
+                >Update Kontak</b-button
               >
             </div>
           </div>
@@ -68,7 +76,7 @@
       class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-4"
       style="margin-top: 2px"
     >
-      <div class="col" v-for="cont in contact" :key="cont.id">
+      <div class="col" v-for="cont in kontak" :key="cont.id">
         <div class="card kontakContent">
           <div class="card-body">
             <div class="kontakLogo d-flex align-items-center">
@@ -76,7 +84,11 @@
               <p class="ms-3 mt-2">{{ cont.contact }}</p>
             </div>
             <div style="float: right; margin-top: 7px">
-              <button class="btn btn-edit" style="margin-right: 14px">
+              <button
+                class="btn btn-edit"
+                style="margin-right: 14px"
+                @click="edit(cont)"
+              >
                 Edit
               </button>
               <button class="btn btn-delete" @click="del(cont)">Hapus</button>
@@ -90,18 +102,22 @@
 
 <script>
 import UploadService from "../services/UploadFilesService";
+import UpdateService from "../services/UpdateFilesService";
 import http from "../http-common";
 import axios from "axios";
 export default {
   name: "App",
   data() {
     return {
-      currentImage: undefined,
-      previewImage: undefined,
+      form: {
+        currentImage: undefined,
+        previewImage: undefined,
+        contact: "",
+      },
 
       message: "",
       kontak: "",
-      contact: [],
+      updateSubmit: false,
       pathContact: this.$pathApi,
     };
   },
@@ -116,24 +132,24 @@ export default {
       this.$refs["modal-kontak"].hide();
     },
     selectImage() {
-      this.currentImage = this.$refs.file.files.item(0);
-      this.previewImage = URL.createObjectURL(this.currentImage);
+      this.form.currentImage = this.$refs.file.files.item(0);
+      this.form.previewImage = URL.createObjectURL(this.form.currentImage);
       this.message = "";
     },
     upload() {
-      UploadService.uploadKontak(this.currentImage, this.kontak)
+      UploadService.uploadKontak(this.form.currentImage, this.form.contact)
         .then((response) => {
           this.message = response.data.message;
           this.message = "Image successfully uploaded !";
           this.hideModal();
           this.load();
           this.message = "";
-          this.kontak = "";
-          this.previewImage = undefined;
+          this.form.contact = "";
+          this.form.previewImage = undefined;
         })
         .catch((err) => {
           this.message = "Could not upload the image!" + err;
-          this.currentImage = undefined;
+          this.form.currentImage = undefined;
         });
     },
     async load() {
@@ -143,21 +159,56 @@ export default {
           {
             headers: {
               "ngrok-skip-browser-warning": 1,
+              Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
         );
 
-        this.contact = contacts.data;
+        this.kontak = contacts.data;
       } catch (e) {
+        this.$router.push("/login");
         console.log(e);
       }
     },
+    edit(editkontak) {
+      this.showModal();
+      this.updateSubmit = true;
+      this.form.id = editkontak.id;
+      this.form.contact = editkontak.contact;
+      this.form.previewImage = editkontak.previewImage;
+    },
+    update(form) {
+      UpdateService.updateKontak(
+        form.id,
+        this.form.currentImage,
+        this.form.contact
+      )
+        .then((response) => {
+          this.message = response.data.message;
+          this.message = "Image successfully uploaded !";
+          this.hideModal();
+          this.load();
+          this.message = "";
+          this.form.contact = "";
+          this.form.previewImage = undefined;
+        })
+        .catch((err) => {
+          this.message = "Could not upload the image!" + err;
+          this.form.currentImage = undefined;
+        });
+    },
     del(delkontak) {
       if (confirm("Apa kamu yakin ingin menghapus ?")) {
-        http.delete("api/dashboard/contact/" + delkontak.id).then((res) => {
-          this.load();
-          console.log(res);
-        });
+        http
+          .delete("api/dashboard/contact/" + delkontak.id, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            this.load();
+            console.log(res);
+          });
       }
     },
   },

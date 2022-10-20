@@ -111,12 +111,14 @@ export default {
           {
             headers: {
               "ngrok-skip-browser-warning": 1,
+              Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
         );
 
         this.tentang = loadtentang.data;
       } catch (e) {
+        this.$router.push("/login");
         console.log(e);
       }
     },
@@ -124,7 +126,12 @@ export default {
       try {
         await axios.post(
           this.$pathApi + "api/dashboard/infoperusahaan/tentangkami",
-          this.form
+          this.form,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
         );
         this.hideModal();
         this.load();
@@ -145,6 +152,11 @@ export default {
           this.$pathApi + "api/dashboard/infoperusahaan/tentangkami/" + form.id,
           {
             tentangkami: this.form.tentangkami,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
           }
         );
 
@@ -162,7 +174,12 @@ export default {
         await axios.delete(
           this.$pathApi +
             "api/dashboard/infoperusahaan/tentangkami/" +
-            deltentang.id
+            deltentang.id,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
         );
         this.load();
         let index = this.visi.indexOf(deltentang.tentangkami);

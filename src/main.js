@@ -10,8 +10,9 @@ require('@/assets/css/sidebar.css')
 import '@fortawesome/fontawesome-free/js/all'
 import './assets/css/style.css'
 
+
 Vue.config.productionTip = false
-Vue.prototype.$pathApi = "https://2d08-114-110-23-154.ap.ngrok.io/"
+Vue.prototype.$pathApi = "https://8516-114-110-23-154.ap.ngrok.io/"
 
 
 new Vue({

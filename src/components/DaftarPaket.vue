@@ -1,11 +1,24 @@
 <template>
   <div>
     <div class="partnerHeader d-flex justify-content-between">
-      <h2>Daftar Paket Wisata</h2>
+      <h2>Paket Wisata</h2>
+      <div class="input-group" style="width: 450px">
+        <span class="input-group-text d-md-block d-none" id="basic-addon1"
+          >Ketik Pencarian</span
+        >
+        <input
+          type="text"
+          v-model="cari"
+          placeholder="Cari Paket"
+          class="form-control d-md-block d-none"
+          @keyup="cariPaket"
+        />
+      </div>
       <div class="d-flex">
         <b-button class="btn btn-secondary me-3" v-b-modal.modal-wisata
           >Tambah Wisata</b-button
         >
+
         <b-modal
           id="modal-wisata"
           ref="modal-wisata"
@@ -179,6 +192,18 @@
         </b-modal>
       </div>
     </div>
+    <div class="input-group mt-3">
+      <span class="input-group-text d-md-none d-block" id="basic-addon1"
+        >Ketik</span
+      >
+      <input
+        type="text"
+        v-model="cari"
+        placeholder="Cari Paket"
+        class="form-control d-md-none d-block"
+        @keyup="cariPaket"
+      />
+    </div>
     <div class="paket mt-3" v-for="paketwisata in paket" :key="paketwisata.id">
       <div class="daftarPaket mt-4">
         <div class="row">
@@ -194,7 +219,7 @@
           <div class="col-lg-7 col-12 mt-lg-0 mt-3">
             <h5>Paket Wisata {{ paketwisata.namapaket }}</h5>
             <span style="color: #55c9d3">{{ paketwisata.hari }}</span>
-            <p style="opacity: 0.7">{{ paketwisata.kota.kota }}</p>
+            <!-- <p style="opacity: 0.7">{{ paketwisata.kota.kota }}</p> -->
             <div class="mt-3 wisataList">
               <span class="fw-bolder">Tempat Wisata</span>
               <ul class="mt-1 row" style="margin-left: -0.75em">
@@ -203,7 +228,7 @@
                   :key="twisata.id"
                   v-for="twisata in paketwisata.paketwisata"
                 >
-                  {{ twisata.wisata.tempatwisata }}
+                  {{ twisata.wisata }}
                 </li>
               </ul>
             </div>
@@ -299,7 +324,7 @@ export default {
         hari: [],
         harga: "RP. 000 - 000 / pack",
       },
-
+      cari: "",
       message: "",
       paket: [],
       kota: "",
@@ -406,6 +431,11 @@ export default {
           this.$pathApi + "api/dashboard/paket/tambahkota/" + this.form.id,
           {
             kotaid: this.form.kotaid,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
           }
         );
         this.hideModal2();
@@ -419,11 +449,13 @@ export default {
         const paket = await axios.get(this.$pathApi + "api/dashboard/paket", {
           headers: {
             "ngrok-skip-browser-warning": 1,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
 
         this.paket = paket.data;
       } catch (e) {
+        this.$router.push("/login");
         console.log(e);
       }
     },
@@ -432,6 +464,7 @@ export default {
         const kota = await axios.get(this.$pathApi + "api/dashboard/kota", {
           headers: {
             "ngrok-skip-browser-warning": 1,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
 
@@ -445,6 +478,7 @@ export default {
         const wisata = await axios.get(this.$pathApi + "api/dashboard/wisata", {
           headers: {
             "ngrok-skip-browser-warning": 1,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
 
@@ -457,7 +491,12 @@ export default {
       try {
         await axios.post(
           this.$pathApi + "api/dashboard/paketwisata",
-          this.formWisata
+          this.formWisata,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
         );
         alert("Tempat wisata berhasil ditambahkan ke dalam paket");
         this.load();
@@ -468,11 +507,36 @@ export default {
     del(delpaket) {
       if (confirm("Apa kamu yakin ingin menghapus ?")) {
         axios
-          .delete(this.$pathApi + "api/dashboard/paket/" + delpaket.id)
+          .delete(this.$pathApi + "api/dashboard/paket/" + delpaket.id, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
           .then((res) => {
             this.load();
             console.log(res);
           });
+      }
+    },
+    async cariPaket() {
+      try {
+        if (this.cari == "") {
+          this.load();
+        } else {
+          const cari = await axios.get(
+            this.$pathApi + "api/dashboard/paket/" + this.cari,
+            {
+              headers: {
+                "ngrok-skip-browser-warning": 1,
+                Authorization: "Bearer " + localStorage.getItem("token"),
+              },
+            }
+          );
+
+          this.kota = cari.data;
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
   },

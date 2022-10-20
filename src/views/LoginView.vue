@@ -14,33 +14,55 @@
         <h3 class="card-title">Halaman Admin Partnerjalan</h3>
         <br />
         <h5 class="card-title" style="color: #55c9d3">Login</h5>
-        <b-form-group label="Username" label-cols-lg="4">
-          <b-form-input
-            v-model="text"
-            placeholder="Masukkan username"
-            required
-          ></b-form-input>
-        </b-form-group>
+        <form @submit.prevent="handleSubmit">
+          <b-form-group label="Email" label-cols-lg="4">
+            <b-form-input
+              v-model="email"
+              placeholder="Masukkan email"
+              required
+            ></b-form-input>
+          </b-form-group>
 
-        <b-form-group label="Password" label-cols-lg="4">
-          <b-form-input
-            v-model="text"
-            type="password"
-            placeholder="Masukkan password"
-            required
-          ></b-form-input>
-        </b-form-group>
-        <button class="btn btn-primary mt-4" style="float: right">
-          <router-link to="/">Masuk</router-link>
-        </button>
+          <b-form-group label="Password" label-cols-lg="4">
+            <b-form-input
+              v-model="password"
+              type="password"
+              placeholder="Masukkan password"
+              required
+            ></b-form-input>
+          </b-form-group>
+          <button
+            type="submit"
+            class="btn btn-primary mt-4"
+            style="float: right"
+          >
+            Masuk
+          </button>
+        </form>
       </div>
     </div>
   </div>
 </template>
   <script>
+import axios from "axios";
 export default {
   name: "LoginView",
-  components: {},
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    async handleSubmit() {
+      const response = await axios.post(this.$pathApi + "api/useradmin/login", {
+        email: this.email,
+        password: this.password,
+      });
+      localStorage.setItem("token", response.data.token);
+      this.$router.push("/");
+    },
+  },
 };
 </script>
 <style>

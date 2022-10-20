@@ -19,7 +19,7 @@
             </div>
             <b-form-group label="Nama Media Sosial" label-cols-lg="6">
               <b-form-input
-                v-model="namamedsos"
+                v-model="form.namamedsos"
                 placeholder="Media sosial"
               ></b-form-input>
             </b-form-group>
@@ -38,11 +38,11 @@
                 />
               </b-input-group>
             </b-form-group>
-            <div v-if="previewImage">
+            <div v-if="form.previewImage">
               <div>
                 <img
                   class="preview my-3"
-                  :src="previewImage"
+                  :src="form.previewImage"
                   alt=""
                   style="width: 50%"
                 />
@@ -55,9 +55,17 @@
               >
               <b-button
                 class="btn btn-primary mt-3"
-                :disabled="!currentImage"
+                :disabled="!form.currentImage"
                 @click="upload"
-                >Tambah Data</b-button
+                v-show="!updateSubmit"
+                >Tambah Medsos</b-button
+              >
+              <b-button
+                class="btn btn-primary mt-3"
+                :disabled="!form.currentImage"
+                @click="update(form)"
+                v-show="updateSubmit"
+                >Update Medsos</b-button
               >
             </div>
           </div>
@@ -75,7 +83,11 @@
               </a>
             </div>
             <div style="float: right; margin-top: 7px">
-              <button class="btn btn-edit" style="margin-right: 14px">
+              <button
+                class="btn btn-edit"
+                style="margin-right: 14px"
+                @click="edit(media)"
+              >
                 Edit
               </button>
               <button class="btn btn-delete" @click="del(media)">Hapus</button>
@@ -89,19 +101,22 @@
   
 <script>
 import UploadService from "../services/UploadFilesService";
+import UpdateService from "../services/UpdateFilesService";
 import http from "../http-common";
 import axios from "axios";
 export default {
   name: "App",
   data() {
     return {
-      currentImage: undefined,
-      previewImage: undefined,
-
+      form: {
+        currentImage: undefined,
+        previewImage: undefined,
+        namamedsos: "",
+      },
       message: "",
-      namamedsos: "",
       medsos: [],
       pathMedsos: this.$pathApi,
+      updateSubmit: false,
     };
   },
   mounted() {
@@ -115,24 +130,24 @@ export default {
       this.$refs["modal-medsos"].hide();
     },
     selectImage() {
-      this.currentImage = this.$refs.file.files.item(0);
-      this.previewImage = URL.createObjectURL(this.currentImage);
+      this.form.currentImage = this.$refs.file.files.item(0);
+      this.form.previewImage = URL.createObjectURL(this.form.currentImage);
       this.message = "";
     },
     upload() {
-      UploadService.uploadMedsos(this.currentImage, this.namamedsos)
+      UploadService.uploadMedsos(this.form.currentImage, this.form.namamedsos)
         .then((response) => {
           this.message = response.data.message;
           this.message = "Image successfully uploaded !";
           this.hideModal();
           this.load();
           this.message = "";
-          this.namamedsos = "";
-          this.previewImage = undefined;
+          this.form.namamedsos = "";
+          this.form.previewImage = undefined;
         })
         .catch((err) => {
           this.message = "Could not upload the image!" + err;
-          this.currentImage = undefined;
+          this.form.currentImage = undefined;
         });
     },
     async load() {
@@ -140,20 +155,55 @@ export default {
         const medsos = await axios.get(this.$pathApi + "api/dashboard/medsos", {
           headers: {
             "ngrok-skip-browser-warning": 1,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
 
         this.medsos = medsos.data;
       } catch (e) {
+        this.$router.push("/login");
         console.log(e);
       }
     },
+    edit(editmedsos) {
+      this.showModal();
+      this.updateSubmit = true;
+      this.form.id = editmedsos.id;
+      this.form.namamedsos = editmedsos.namamedsos;
+      this.form.previewImage = editmedsos.previewImage;
+    },
+    update(form) {
+      UpdateService.updateMedsos(
+        form.id,
+        this.form.currentImage,
+        this.form.namamedsos
+      )
+        .then((response) => {
+          this.message = response.data.message;
+          this.message = "Image successfully uploaded !";
+          this.hideModal();
+          this.load();
+          this.message = "";
+          this.form.namamedsos = "";
+          this.form.previewImage = undefined;
+        })
+        .catch((err) => {
+          this.message = "Could not upload the image!" + err;
+          this.form.currentImage = undefined;
+        });
+    },
     del(delmedsos) {
       if (confirm("Apa kamu yakin ingin menghapus ?")) {
-        http.delete("api/dashboard/medsos/" + delmedsos.id).then((res) => {
-          this.load();
-          console.log(res);
-        });
+        http
+          .delete("api/dashboard/medsos/" + delmedsos.id, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            this.load();
+            console.log(res);
+          });
       }
     },
   },

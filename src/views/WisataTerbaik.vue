@@ -113,11 +113,13 @@ export default {
         const rekomen = await http.get("api/dashboard/recomen", {
           headers: {
             "ngrok-skip-browser-warning": 1,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
 
         this.rekomen = rekomen.data;
       } catch (e) {
+        this.$router.push("/login");
         console.log(e);
       }
     },
@@ -126,6 +128,7 @@ export default {
         const kota = await http.get("api/dashboard/kota", {
           headers: {
             "ngrok-skip-browser-warning": 1,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
 
@@ -136,7 +139,11 @@ export default {
     },
     async add() {
       try {
-        await http.post("api/dashboard/recomen", this.form);
+        await http.post("api/dashboard/recomen", this.form, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
         alert("Paket terbaik berhasil ditambahkan");
         this.hideModal();
         this.load();
@@ -146,10 +153,16 @@ export default {
     },
     del(terbaik) {
       if (confirm("Apa kamu yakin ingin menghapus ?")) {
-        http.delete("api/dashboard/recomen/" + terbaik.id).then((res) => {
-          this.load();
-          console.log(res);
-        });
+        http
+          .delete("api/dashboard/recomen/" + terbaik.id, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            this.load();
+            console.log(res);
+          });
       }
     },
   },

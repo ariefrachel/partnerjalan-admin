@@ -174,12 +174,14 @@ export default {
           {
             headers: {
               "ngrok-skip-browser-warning": 1,
+              Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
         );
 
         this.pemesanan = loadriwayat.data;
       } catch (e) {
+        this.$router.push("/login");
         console.log(e);
       }
     },
@@ -188,6 +190,7 @@ export default {
         const paket = await axios.get(this.$pathApi + "api/dashboard/paket", {
           headers: {
             "ngrok-skip-browser-warning": 1,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
 
@@ -206,12 +209,20 @@ export default {
     },
     async update(form) {
       try {
-        await axios.patch(this.$pathApi + "api/dashboard/riwayat/" + form.id, {
-          namalengkap: this.form.namalengkap,
-          notelp: this.form.notelp,
-          email: this.form.email,
-          datetime: this.form.datetime,
-        });
+        await axios.patch(
+          this.$pathApi + "api/dashboard/riwayat/" + form.id,
+          {
+            namalengkap: this.form.namalengkap,
+            notelp: this.form.notelp,
+            email: this.form.email,
+            datetime: this.form.datetime,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
         this.hideModal();
         this.load();
         this.form.id = "";
@@ -235,6 +246,11 @@ export default {
           this.$pathApi + "api/dashboard/riwayat/ubahpaket/" + formPaket.id,
           {
             paketid: this.formPaket.paketid,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
           }
         );
         this.hideModal2();
@@ -248,7 +264,11 @@ export default {
     del(delriwayat) {
       if (confirm("Apa kamu yakin ingin menghapus ?")) {
         axios
-          .delete(this.$pathApi + "api/dashboard/riwayat/" + delriwayat.id)
+          .delete(this.$pathApi + "api/dashboard/riwayat/" + delriwayat.id, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
           .then((res) => {
             this.load();
             console.log(res);

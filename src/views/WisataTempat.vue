@@ -135,11 +135,13 @@ export default {
           {
             headers: {
               "ngrok-skip-browser-warning": 1,
+              Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
         );
         this.wisata = loadwisata.data;
       } catch (e) {
+        this.$router.push("/login");
         console.log(e);
       }
     },
@@ -148,6 +150,7 @@ export default {
         const kota = await axios.get(this.$pathApi + "api/dashboard/kota", {
           headers: {
             "ngrok-skip-browser-warning": 1,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
 
@@ -158,7 +161,11 @@ export default {
     },
     async add() {
       try {
-        await axios.post(this.$pathApi + "api/dashboard/wisata", this.form);
+        await axios.post(this.$pathApi + "api/dashboard/wisata", this.form, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
         this.hideModal();
         this.load();
         this.form.tempatwisata = "";
@@ -174,9 +181,17 @@ export default {
     },
     async update(form) {
       try {
-        await axios.patch(this.$pathApi + "api/dashboard/wisata/" + form.id, {
-          tempatwisata: this.form.tempatwisata,
-        });
+        await axios.patch(
+          this.$pathApi + "api/dashboard/wisata/" + form.id,
+          {
+            tempatwisata: this.form.tempatwisata,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
         this.hideModal();
         this.load();
         this.form.kotaid = "";
@@ -189,7 +204,11 @@ export default {
     del(wisata) {
       if (confirm("Apa kamu yakin ingin menghapus ?")) {
         axios
-          .delete(this.$pathApi + "api/dashboard/wisata/" + wisata.id)
+          .delete(this.$pathApi + "api/dashboard/wisata/" + wisata.id, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
           .then((res) => {
             this.load();
             console.log(res);

@@ -111,12 +111,14 @@ export default {
           {
             headers: {
               "ngrok-skip-browser-warning": 1,
+              Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
         );
 
         this.visi = loadvisi.data;
       } catch (e) {
+        this.$router.push("/login");
         console.log(e);
       }
     },
@@ -124,7 +126,12 @@ export default {
       try {
         await axios.post(
           this.$pathApi + "api/dashboard/infoperusahaan/visimisi",
-          this.form
+          this.form,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
         );
         this.hideModal();
         this.load();
@@ -145,6 +152,11 @@ export default {
           this.$pathApi + "api/dashboard/infoperusahaan/visimisi/" + form.id,
           {
             visimisi: this.form.visimisi,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
           }
         );
 
@@ -160,7 +172,12 @@ export default {
     async del(delvisi) {
       try {
         await axios.delete(
-          this.$pathApi + "api/dashboard/infoperusahaan/visimisi/" + delvisi.id
+          this.$pathApi + "api/dashboard/infoperusahaan/visimisi/" + delvisi.id,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
         );
         this.load();
         let index = this.visi.indexOf(delvisi.visimisi);

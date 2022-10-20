@@ -159,9 +159,9 @@
               <i class="fas fa-phone"></i>
               <router-link to="/kontak">Kontak</router-link>
             </li>
-            <li class="d-flex align-items-center mt-5">
+            <li class="d-flex align-items-center mt-5" @click="logout">
               <i class="fas fa-right-from-bracket"></i>
-              <router-link to="/login">Logout</router-link>
+              Logout
             </li>
           </ul>
         </nav>
@@ -181,7 +181,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    async logout() {
+      try {
+        window.localStorage.clear();
+        await this.$router.push("/login");
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
+};
 </script>
 
 <style scoped>

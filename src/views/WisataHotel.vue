@@ -231,11 +231,13 @@ export default {
           {
             headers: {
               "ngrok-skip-browser-warning": 1,
+              Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
         );
         this.hotel = loadhotel.data;
       } catch (e) {
+        this.$router.push("/login");
         console.log(e);
       }
     },
@@ -244,6 +246,7 @@ export default {
         const kota = await axios.get(this.$pathApi + "api/dashboard/kota", {
           headers: {
             "ngrok-skip-browser-warning": 1,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
 
@@ -257,6 +260,7 @@ export default {
         const paket = await axios.get(this.$pathApi + "api/dashboard/paket", {
           headers: {
             "ngrok-skip-browser-warning": 1,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
 
@@ -267,7 +271,11 @@ export default {
     },
     async add() {
       try {
-        await axios.post(this.$pathApi + "api/dashboard/hotel", this.form);
+        await axios.post(this.$pathApi + "api/dashboard/hotel", this.form, {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
         this.hideModal();
         this.load();
         this.form.nama = "";
@@ -279,7 +287,12 @@ export default {
       try {
         await axios.post(
           this.$pathApi + "api/dashboard/hotel/relasi",
-          this.formRelasi
+          this.formRelasi,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
         );
         this.hideModal2();
         this.load();
@@ -297,9 +310,17 @@ export default {
     },
     async update(form) {
       try {
-        await axios.patch(this.$pathApi + "api/dashboard/hotel/" + form.id, {
-          nama: this.form.nama,
-        });
+        await axios.patch(
+          this.$pathApi + "api/dashboard/hotel/" + form.id,
+          {
+            nama: this.form.nama,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
         this.hideModal();
         this.load();
         this.form.kotaid = "";
@@ -312,7 +333,11 @@ export default {
     del(hotel) {
       if (confirm("Apa kamu yakin ingin menghapus ?")) {
         axios
-          .delete(this.$pathApi + "api/dashboard/hotel/" + hotel.id)
+          .delete(this.$pathApi + "api/dashboard/hotel/" + hotel.id, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
           .then((res) => {
             this.load();
             console.log(res);

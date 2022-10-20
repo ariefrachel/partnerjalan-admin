@@ -114,12 +114,14 @@ export default {
           {
             headers: {
               "ngrok-skip-browser-warning": 1,
+              Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
         );
 
         this.foto = loadfoto.data;
       } catch (e) {
+        this.$router.push("/login");
         console.log(e);
       }
     },
@@ -147,7 +149,12 @@ export default {
       if (confirm("Apa kamu yakin ingin menghapus ?")) {
         axios
           .delete(
-            this.$pathApi + "api/dashboard/infoperusahaan/foto/" + foto.id
+            this.$pathApi + "api/dashboard/infoperusahaan/foto/" + foto.id,
+            {
+              headers: {
+                Authorization: "Bearer " + localStorage.getItem("token"),
+              },
+            }
           )
           .then((res) => {
             this.load();

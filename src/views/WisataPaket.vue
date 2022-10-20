@@ -6,7 +6,7 @@
     </div>
   </div>
 </template>
-    <script>
+<script>
 import SidebarNav from "@/components/SidebarNav.vue";
 import DaftarPaket from "@/components/DaftarPaket.vue";
 export default {

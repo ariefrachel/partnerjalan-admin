@@ -164,11 +164,13 @@ export default {
         const testimoni = await http.get("api/dashboard/testimoni", {
           headers: {
             "ngrok-skip-browser-warning": 1,
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
 
         this.testimoni = testimoni.data;
       } catch (e) {
+        this.$router.push("/login");
         console.log(e);
       }
     },
@@ -201,10 +203,16 @@ export default {
     },
     del(testi) {
       if (confirm("Apa kamu yakin ingin menghapus ?")) {
-        http.delete("api/dashboard/testimoni/" + testi.id).then((res) => {
-          this.load();
-          console.log(res);
-        });
+        http
+          .delete("api/dashboard/testimoni/" + testi.id, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            this.load();
+            console.log(res);
+          });
       }
     },
   },

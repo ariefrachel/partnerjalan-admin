@@ -9,7 +9,8 @@ class UploadFilesService {
 
     return http.post("api/dashboard/kota/", formDataKota, {
       headers: {
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + localStorage.getItem("token")
       },
     });
   }
@@ -20,7 +21,8 @@ class UploadFilesService {
 
     return http.post("api/dashboard/partnership/", formDataPartnership, {
       headers: {
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + localStorage.getItem("token")
       },
     });
   }
@@ -31,7 +33,8 @@ class UploadFilesService {
 
     return http.post("api/dashboard/infoperusahaan/foto", formDataTentang, {
       headers: {
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + localStorage.getItem("token")
       },
     });
   }
@@ -43,7 +46,8 @@ class UploadFilesService {
 
     return http.post("api/dashboard/testimoni/", formDataTestimoni, {
       headers: {
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + localStorage.getItem("token")
       },
     });
   }
@@ -55,7 +59,8 @@ class UploadFilesService {
 
     return http.post("api/dashboard/contact/", formDataKontak, {
       headers: {
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + localStorage.getItem("token")
       },
     });
   }
@@ -67,7 +72,8 @@ class UploadFilesService {
 
     return http.post("api/dashboard/medsos/", formDataMedsos, {
       headers: {
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + localStorage.getItem("token")
       },
     });
   }
@@ -81,7 +87,8 @@ class UploadFilesService {
 
     return http.post("api/dashboard/paket/", formDataPaket, {
       headers: {
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "multipart/form-data",
+        Authorization: "Bearer " + localStorage.getItem("token")
       },
     });
   }

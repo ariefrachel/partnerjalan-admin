@@ -9,7 +9,21 @@ class UpdateFilesService {
     
         return http.patch("api/dashboard/testimoni/" + id, formDataTestimoni, {
           headers: {
-            "Content-Type": "multipart/form-data"
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + localStorage.getItem("token")
+          },
+        });
+      }
+      updateKontak(id,file,contact) {
+        let formDataKontak = new FormData();
+    
+        formDataKontak.append("file", file);
+        formDataKontak.append("contact", contact)
+    
+        return http.patch("api/dashboard/contact/" + id, formDataKontak, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + localStorage.getItem("token")
           },
         });
       }
@@ -17,11 +31,12 @@ class UpdateFilesService {
         let formDataMedsos = new FormData();
     
         formDataMedsos.append("file", file);
-        formDataMedsos.append("caption", medsos)
+        formDataMedsos.append("namamedsos", medsos)
     
         return http.patch("api/dashboard/medsos/" + id, formDataMedsos, {
           headers: {
-            "Content-Type": "multipart/form-data"
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + localStorage.getItem("token")
           },
         });
       }
@@ -33,7 +48,8 @@ class UpdateFilesService {
     
         return http.patch("api/dashboard/kota/" + id, formDataKota, {
           headers: {
-            "Content-Type": "multipart/form-data"
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + localStorage.getItem("token")
           },
         });
       }
@@ -47,7 +63,8 @@ class UpdateFilesService {
     
         return http.patch("api/dashboard/paket/" + id, formDataPaket, {
           headers: {
-            "Content-Type": "multipart/form-data"
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + localStorage.getItem("token")
           },
         });
       }
