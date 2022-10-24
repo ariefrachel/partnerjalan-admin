@@ -1,6 +1,11 @@
 <template>
   <div class="table-responsive">
-    <table class="table table-light">
+    <table
+      class="table table-light"
+      data-aos="fade-up"
+      data-aos-duration="800"
+      data-aos-delay="50"
+    >
       <thead class="table-dark">
         <tr>
           <th scope="col">Kode Pemesanan</th>
@@ -24,14 +29,25 @@
             </button>
           </td>
           <td>
-            <button
-              v-if="formHotel.hotel == ''"
-              class="btn btn-sm btn-warning"
-              @click="ubahHotel(riwayat)"
-            >
-              + Hotel
-            </button>
-            <div v-if="formHotel.hotel !== ''">{{ riwayat.hotel }}</div>
+            <div v-if="riwayat.hotelid === null">
+              <button
+                class="btn btn-sm btn-primary"
+                @click="editHotel(riwayat)"
+              >
+                + Hotel
+              </button>
+            </div>
+            <div v-else>
+              {{ riwayat.hotel?.nama }}
+              <br />
+              <button
+                class="btn btn-sm btn-warning"
+                @click="editHotel(riwayat)"
+              >
+                Ubah
+              </button>
+            </div>
+            <!-- {{ riwayat.hotel }} -->
           </td>
           <td>{{ riwayat.namalengkap }}</td>
           <td>{{ riwayat.notelp }}</td>
@@ -78,6 +94,38 @@
           variant="primary"
           block
           @click="updatePaket(form)"
+          >Ubah Data</b-button
+        >
+      </form>
+    </b-modal>
+    <b-modal ref="modal-hotel" centered hide-footer title="Ubah Paket">
+      <form>
+        <div class="d-block">
+          <b-form-group label="Nama Hotel" label-cols-lg="4">
+            <b-form-select class="form-select" v-model="formHotel.hotelid">
+              <template #first>
+                <b-form-select-option :value="null" disabled>
+                  Pilih Hotel
+                </b-form-select-option>
+              </template>
+              <b-form-select-option
+                :key="hotel.id"
+                v-for="hotel in hotel"
+                :value="hotel.id"
+                >{{ hotel.nama }}</b-form-select-option
+              >
+            </b-form-select>
+          </b-form-group>
+        </div>
+        <b-button class="mt-3" id="hide-btn" @click="hideModal3"
+          >Batal</b-button
+        >
+        <b-button
+          class="mt-3 ms-3"
+          type="submit"
+          variant="primary"
+          block
+          @click="updateHotel(form)"
           >Ubah Data</b-button
         >
       </form>
@@ -138,7 +186,7 @@ export default {
       // perPage: 3,
       // currentPage: 1,
       formHotel: {
-        hotel: "",
+        hotelid: [],
       },
       formPaket: {
         paketid: [],
@@ -150,8 +198,10 @@ export default {
         email: "",
         datetime: "",
       },
+      tampilHotel: false,
       pemesanan: [],
       paket: [],
+      hotel: [],
     };
   },
   methods: {
@@ -166,6 +216,12 @@ export default {
     },
     hideModal2() {
       this.$refs["modal-paket"].hide();
+    },
+    showModal3() {
+      this.$refs["modal-hotel"].show();
+    },
+    hideModal3() {
+      this.$refs["modal-hotel"].hide();
     },
     async load() {
       try {
@@ -261,6 +317,47 @@ export default {
         console.log(e);
       }
     },
+    async loadHotel() {
+      try {
+        const hotel = await axios.get(this.$pathApi + "api/dashboard/hotel", {
+          headers: {
+            "ngrok-skip-browser-warning": 1,
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
+
+        this.hotel = hotel.data;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    editHotel(edithotel) {
+      this.showModal3();
+      this.updateSubmit = true;
+      this.form.id = edithotel.id;
+      this.formHotel.hotelid = edithotel.hotelid;
+    },
+    async updateHotel(formHotel) {
+      try {
+        await axios.patch(
+          this.$pathApi + "api/dashboard/riwayat/ubahhotel/" + formHotel.id,
+          {
+            hotelid: this.formHotel.hotelid,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+        this.hideModal3();
+        this.load();
+        this.formPaket.id = "";
+        this.formPaket.paketid = "";
+      } catch (e) {
+        console.log(e);
+      }
+    },
     del(delriwayat) {
       if (confirm("Apa kamu yakin ingin menghapus ?")) {
         axios
@@ -279,6 +376,7 @@ export default {
   mounted() {
     this.load();
     this.loadPaket();
+    this.loadHotel();
   },
   // computed: {
   //   rows() {

@@ -1,6 +1,10 @@
 <template>
   <div class="kontakTour">
-    <div class="kontakHeader d-flex justify-content-between">
+    <div
+      class="kontakHeader d-flex justify-content-between"
+      data-aos="fade-down"
+      data-aos-duration="800"
+    >
       <h2>Kontak</h2>
       <div>
         <b-button class="btn btn-primary" v-b-modal.modal-kontak
@@ -77,7 +81,12 @@
       style="margin-top: 2px"
     >
       <div class="col" v-for="cont in kontak" :key="cont.id">
-        <div class="card kontakContent">
+        <div
+          class="card kontakContent"
+          data-aos="fade-up"
+          data-aos-duration="800"
+          data-aos-delay="50"
+        >
           <div class="card-body">
             <div class="kontakLogo d-flex align-items-center">
               <img :src="pathContact + cont.path" alt="ikon" />

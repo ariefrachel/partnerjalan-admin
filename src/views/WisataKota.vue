@@ -1,7 +1,11 @@
 <template>
   <div class="wisataterbaik" id="content">
     <SidebarNav />
-    <div class="Header d-flex justify-content-between">
+    <div
+      class="Header d-flex justify-content-between"
+      data-aos="fade-down"
+      data-aos-duration="800"
+    >
       <h2>Kota</h2>
       <div class="input-group" style="width: 450px">
         <span class="input-group-text d-md-block d-none" id="basic-addon1"
@@ -99,7 +103,11 @@
       style="margin-top: 21px"
     >
       <div class="col" :key="kategori.id" v-for="kategori in kota">
-        <div class="card testimoniContent">
+        <div
+          class="card testimoniContent"
+          data-aos="fade-up"
+          data-aos-duration="800"
+        >
           <div class="testiImage">
             <img
               :src="pathImg + kategori.pathgambar"

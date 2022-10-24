@@ -1,6 +1,10 @@
 <template>
   <div class="mediaSosial">
-    <div class="medsosHeader d-flex justify-content-between">
+    <div
+      class="medsosHeader d-flex justify-content-between"
+      data-aos="fade-down"
+      data-aos-duration="800"
+    >
       <h2>Media Sosial</h2>
       <div>
         <b-button class="btn btn-primary" v-b-modal.modal-medsos
@@ -75,7 +79,12 @@
     <div class="row row-cols-1 row-cols-lg-3 g-4" style="margin-top: 2px">
       <div class="col" v-for="media in medsos" :key="media.id">
         <div class="card kontakContent">
-          <div class="card-body">
+          <div
+            class="card-body"
+            data-aos="fade-up"
+            data-aos-duration="800"
+            data-aos-delay="50"
+          >
             <div class="kontakLogo d-flex align-items-center">
               <img :src="pathMedsos + media.pathicon" alt="ikon" />
               <a v-bind:href="media.link" target="_blank">

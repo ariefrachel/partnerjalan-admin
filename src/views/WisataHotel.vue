@@ -2,7 +2,11 @@
   <div class="fasilitas" id="content">
     <SidebarNav />
     <div class="visiMisi">
-      <div class="about d-flex justify-content-between">
+      <div
+        class="about d-flex justify-content-between"
+        data-aos="fade-down"
+        data-aos-duration="800"
+      >
         <h4>Hotel</h4>
         <div class="d-flex">
           <b-button
@@ -152,7 +156,12 @@
       <div class="inputabout">
         <div class="row" :key="hotel.id" v-for="hotel in hotel">
           <div class="col-12">
-            <div class="card mt-1">
+            <div
+              class="card mt-1"
+              data-aos="fade-up"
+              data-aos-duration="800"
+              data-aos-delay="50"
+            >
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-10 col-9">

@@ -1,7 +1,11 @@
 <template>
   <div class="wisataterbaik" id="content">
     <SidebarNav />
-    <div class="Header d-flex justify-content-between">
+    <div
+      class="Header d-flex justify-content-between"
+      data-aos="fade-down"
+      data-aos-duration="800"
+    >
       <h2>Wisata Terbaik</h2>
 
       <div>
@@ -54,7 +58,12 @@
       style="margin-top: 21px"
     >
       <div class="col" :key="rekomen.id" v-for="rekomen in rekomen">
-        <div class="card testimoniContent">
+        <div
+          class="card testimoniContent"
+          data-aos="fade-up"
+          data-aos-duration="800"
+          data-aos-delay="50"
+        >
           <div class="testiImage">
             <img
               :src="pathImg + rekomen.kota.pathgambar"

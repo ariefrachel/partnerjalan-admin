@@ -1,6 +1,10 @@
 <template>
   <div class="visiMisi">
-    <div class="about d-flex justify-content-between">
+    <div
+      class="about d-flex justify-content-between"
+      data-aos="fade-down"
+      data-aos-duration="800"
+    >
       <h4>Tentang Kami</h4>
       <div class="d-flex">
         <b-button id="show-btn" @click="showModal" variant="primary"
@@ -48,7 +52,12 @@
         </form>
       </b-modal>
     </div>
-    <div class="inputabout">
+    <div
+      class="inputabout"
+      data-aos="fade-up"
+      data-aos-duration="800"
+      data-aos-delay="50"
+    >
       <div>
         <div class="row" v-for="tentang in tentang.tentang" :key="tentang.id">
           <div class="col-12">
@@ -83,6 +92,8 @@
 
 <script>
 import axios from "axios";
+import AOS from "aos";
+import "aos/dist/aos.css";
 export default {
   data() {
     return {
@@ -95,6 +106,7 @@ export default {
     };
   },
   mounted() {
+    AOS.init();
     this.load();
   },
   methods: {

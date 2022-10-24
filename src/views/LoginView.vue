@@ -3,7 +3,12 @@
     class="login d-flex justify-content-center align-items-center"
     style="margin-top: 84px"
   >
-    <div class="card" style="width: 24rem; border-radius: 16px">
+    <div
+      class="card"
+      style="width: 24rem; border-radius: 16px"
+      data-aos="fade-up"
+      data-aos-duration="800"
+    >
       <img
         src="../assets/image/header-bg.png"
         class="card-img-top"

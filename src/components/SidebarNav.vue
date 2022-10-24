@@ -185,7 +185,7 @@ export default {
   methods: {
     async logout() {
       try {
-        window.localStorage.clear();
+        localStorage.removeItem("token", "null");
         await this.$router.push("/login");
       } catch (e) {
         console.log(e);

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div class="partnerHeader d-flex justify-content-between">
+    <div
+      class="partnerHeader d-flex justify-content-between"
+      data-aos="fade-down"
+      data-aos-duration="800"
+    >
       <h2>Paket Wisata</h2>
       <div class="input-group" style="width: 450px">
         <span class="input-group-text d-md-block d-none" id="basic-addon1"
@@ -192,7 +196,7 @@
         </b-modal>
       </div>
     </div>
-    <div class="input-group mt-3">
+    <div class="input-group mt-3" data-aos="fade-down" data-aos-duration="800">
       <span class="input-group-text d-md-none d-block" id="basic-addon1"
         >Ketik</span
       >
@@ -205,7 +209,12 @@
       />
     </div>
     <div class="paket mt-3" v-for="paketwisata in paket" :key="paketwisata.id">
-      <div class="daftarPaket mt-4">
+      <div
+        class="daftarPaket mt-4"
+        data-aos="fade-up"
+        data-aos-duration="800"
+        data-aos-delay="50"
+      >
         <div class="row">
           <div class="col-lg-3 col-12">
             <div class="paketImg">
@@ -218,8 +227,10 @@
           </div>
           <div class="col-lg-7 col-12 mt-lg-0 mt-3">
             <h5>Paket Wisata {{ paketwisata.namapaket }}</h5>
-            <span style="color: #55c9d3">{{ paketwisata.hari }}</span>
-            <!-- <p style="opacity: 0.7">{{ paketwisata.kota.kota }}</p> -->
+            <span style="opacity: 0.7">{{ paketwisata.kota?.kota }}</span>
+            <span style="color: #55c9d3" class="ms-3">{{
+              paketwisata.hari
+            }}</span>
             <div class="mt-3 wisataList">
               <span class="fw-bolder">Tempat Wisata</span>
               <ul class="mt-1 row" style="margin-left: -0.75em">
@@ -228,7 +239,7 @@
                   :key="twisata.id"
                   v-for="twisata in paketwisata.paketwisata"
                 >
-                  {{ twisata.wisata }}
+                  {{ twisata.wisata?.tempatwisata }}
                 </li>
               </ul>
             </div>

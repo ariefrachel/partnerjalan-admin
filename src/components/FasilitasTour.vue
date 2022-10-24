@@ -1,6 +1,10 @@
 <template>
   <div class="visiMisi">
-    <div class="about d-flex justify-content-between">
+    <div
+      class="about d-flex justify-content-between"
+      data-aos="fade-down"
+      data-aos-duration="800"
+    >
       <h4>Fasilitas Tour</h4>
       <div class="d-flex">
         <b-button id="show-btn" @click="showModal" variant="primary"
@@ -51,7 +55,12 @@
     <div class="inputabout">
       <div class="row" :key="tour.id" v-for="tour in tour.fasilitastour">
         <div class="col-12">
-          <div class="card mt-1">
+          <div
+            class="card mt-1"
+            data-aos="fade-up"
+            data-aos-duration="800"
+            data-aos-delay="50"
+          >
             <div class="card-body">
               <div class="row">
                 <div class="col-md-10 col-9">

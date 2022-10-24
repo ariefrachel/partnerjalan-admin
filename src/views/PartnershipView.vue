@@ -1,7 +1,11 @@
 <template>
   <div class="partnership" id="content">
     <SidebarNav />
-    <div class="partnerHeader d-flex justify-content-between">
+    <div
+      class="partnerHeader d-flex justify-content-between"
+      data-aos="fade-down"
+      data-aos-duration="800"
+    >
       <h2>Partnership</h2>
       <div>
         <b-button class="btn btn-primary" v-b-modal.modal-center
@@ -72,7 +76,12 @@
       style="margin-top: 21px"
     >
       <div class="col" v-for="partner in partnership" :key="partner.id">
-        <div class="card partnerContent">
+        <div
+          class="card partnerContent"
+          data-aos="fade-up"
+          data-aos-duration="800"
+          data-aos-delay="50"
+        >
           <div class="partnerLogo d-flex align-items-center">
             <img
               :src="pathPartner + partner.path"

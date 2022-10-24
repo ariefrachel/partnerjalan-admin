@@ -1,6 +1,11 @@
 <template>
   <div class="visiMisi">
-    <div class="about d-flex justify-content-between">
+    <div
+      class="about d-flex justify-content-between"
+      data-aos="fade-up"
+      data-aos-duration="800"
+      data-aos-delay="100"
+    >
       <h4>Foto</h4>
       <div class="d-flex">
         <b-button id="show-btn" @click="showModal" variant="primary"
@@ -62,7 +67,12 @@
       class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 mt-1"
     >
       <div class="col" v-for="foto in foto.foto" :key="foto.id">
-        <div class="card testimoniContent">
+        <div
+          class="card testimoniContent"
+          data-aos="fade-up"
+          data-aos-duration="800"
+          data-aos-delay="100"
+        >
           <div class="testiImage">
             <img
               :src="pathFoto + foto.path"

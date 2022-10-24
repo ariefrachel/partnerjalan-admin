@@ -1,22 +1,12 @@
 <template>
   <div class="riwayat" id="content">
     <SidebarNav />
-    <div class="riwayatHeader d-flex justify-content-between">
+    <div
+      class="riwayatHeader d-flex justify-content-between"
+      data-aos="fade-down"
+      data-aos-duration="800"
+    >
       <h2>Riwayat Pemesanan</h2>
-      <div class="row">
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Cari riwayat..."
-            aria-label="Recipient's username"
-            aria-describedby="button-addon2"
-          />
-          <button class="btn btn-primary" type="button" id="button-addon2">
-            Cari
-          </button>
-        </div>
-      </div>
     </div>
 
     <div style="margin-top: 42px">

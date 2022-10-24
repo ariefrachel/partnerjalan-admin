@@ -1,13 +1,22 @@
 <template>
   <div>
-    <div class="riwayatHeader d-flex justify-content-between">
+    <div
+      class="riwayatHeader d-flex justify-content-between"
+      data-aos="fade-down"
+      data-aos-duration="800"
+    >
       <h2>Daftar Admin</h2>
       <button class="btn btn-primary" v-b-modal.modal-admin>
         Tambah Admin
       </button>
     </div>
     <div class="table-responsive" style="margin-top: 21px">
-      <table class="table table-light">
+      <table
+        class="table table-light"
+        data-aos="fade-up"
+        data-aos-duration="800"
+        data-aos-delay="50"
+      >
         <thead class="table-dark">
           <tr>
             <th scope="col">Nama Lengkap</th>

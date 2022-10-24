@@ -1,7 +1,11 @@
 <template>
   <div class="testimoni" id="content">
     <SidebarNav />
-    <div class="testimoniHeader d-flex justify-content-between">
+    <div
+      class="testimoniHeader d-flex justify-content-between"
+      data-aos="fade-down"
+      data-aos-duration="800"
+    >
       <h2>Testimoni</h2>
       <div>
         <b-button class="btn btn-primary" v-b-modal.modal-testi
@@ -78,7 +82,12 @@
       style="margin-top: 21px"
     >
       <div class="col" v-for="testi in testimoni" :key="testi.id">
-        <div class="card testimoniContent">
+        <div
+          class="card testimoniContent"
+          data-aos="fade-up"
+          data-aos-duration="800"
+          data-aos-delay="50"
+        >
           <div class="testiImage">
             <img
               :src="pathTesti + testi.path"

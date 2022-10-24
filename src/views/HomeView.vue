@@ -1,10 +1,12 @@
 <template>
   <div class="home" id="content">
     <SidebarNav />
-    <h2>Selamat Datang di Halaman Admin PartnerJalan</h2>
+    <h2 data-aos="fade-down" data-aos-duration="800">
+      Selamat Datang di Halaman Admin PartnerJalan
+    </h2>
     <div class="row gy-3" style="margin-top: 35px">
       <div class="col-lg-3 col-md-6">
-        <div class="card">
+        <div class="card" data-aos="fade-up" data-aos-duration="800">
           <div class="card-body">
             <h6 class="card-title">Total Kota</h6>
             <h3 class="card-text">
@@ -17,7 +19,12 @@
         </div>
       </div>
       <div class="col-lg-3 col-md-6">
-        <div class="card">
+        <div
+          class="card"
+          data-aos="fade-up"
+          data-aos-duration="800"
+          data-aos-delay="50"
+        >
           <div class="card-body">
             <h6 class="card-title">Total Paket Wisata</h6>
             <h3 class="card-text">
@@ -30,7 +37,12 @@
         </div>
       </div>
       <div class="col-lg-3 col-md-6">
-        <div class="card">
+        <div
+          class="card"
+          data-aos="fade-up"
+          data-aos-duration="800"
+          data-aos-delay="100"
+        >
           <div class="card-body">
             <h6 class="card-title">Total Testimoni</h6>
             <h3 class="card-text">
@@ -43,7 +55,12 @@
         </div>
       </div>
       <div class="col-lg-3 col-md-6">
-        <div class="card">
+        <div
+          class="card"
+          data-aos="fade-up"
+          data-aos-duration="800"
+          data-aos-delay="150"
+        >
           <div class="card-body">
             <h6 class="card-title">Total Pemesanan</h6>
             <h3 class="card-text">
@@ -59,6 +76,9 @@
         <div
           class="card mt-2"
           style="position: relative; height: 385px; overflow: hidden"
+          data-aos="fade-up"
+          data-aos-duration="800"
+          data-aos-delay="200"
         >
           <img
             src="../assets/image/home.png"
@@ -74,6 +94,8 @@
 <script>
 import SidebarNav from "@/components/SidebarNav.vue";
 import axios from "axios";
+import AOS from "aos";
+import "aos/dist/aos.css";
 export default {
   name: "HomeView",
   components: {
@@ -89,6 +111,7 @@ export default {
     };
   },
   mounted() {
+    AOS.init();
     this.load();
     this.loadPaket();
     this.loadTesti();

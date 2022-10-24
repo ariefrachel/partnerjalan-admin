@@ -1,6 +1,11 @@
 <template>
   <div class="visiMisi">
-    <div class="about d-flex justify-content-between">
+    <div
+      class="about d-flex justify-content-between"
+      data-aos="fade-up"
+      data-aos-duration="800"
+      data-aos-delay="50"
+    >
       <h4>Visi dan misi</h4>
       <div class="d-flex">
         <b-button id="show-btn" @click="showModal" variant="primary"
@@ -48,7 +53,12 @@
         </form>
       </b-modal>
     </div>
-    <div class="inputabout">
+    <div
+      class="inputabout"
+      data-aos="fade-up"
+      data-aos-duration="800"
+      data-aos-delay="100"
+    >
       <div>
         <div class="row" v-for="vis in visi.visimisi" :key="vis.id">
           <div class="col-12">

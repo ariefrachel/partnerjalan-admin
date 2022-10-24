@@ -12,8 +12,11 @@ import './assets/css/style.css'
 
 
 Vue.config.productionTip = false
-Vue.prototype.$pathApi = "https://8516-114-110-23-154.ap.ngrok.io/"
+Vue.prototype.$pathApi = "https://8c27-175-158-53-206.ap.ngrok.io/"
 
+import AOS from 'aos';
+import 'aos/dist/aos.css'; 
+AOS.init();
 
 new Vue({
   router,
