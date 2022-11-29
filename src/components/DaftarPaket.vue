@@ -240,6 +240,9 @@
                   v-for="twisata in paketwisata.paketwisata"
                 >
                   {{ twisata.wisata?.tempatwisata }}
+                  <button class="btn btn-sm" @click="delwisata(twisata)">
+                    <i class="fas fa-trash" style="color: #dc3545"></i>
+                  </button>
                 </li>
               </ul>
             </div>
@@ -249,16 +252,10 @@
           </div>
           <div class="col-lg-2 col-12">
             <div class="row">
-              <button
-                class="btn btn-outline-warning"
-                @click="edit(paketwisata)"
-              >
+              <button class="btn btn-edit" @click="edit(paketwisata)">
                 Edit Kota
               </button>
-              <button
-                class="btn btn-outline-warning mt-3"
-                @click="editPaket(paketwisata)"
-              >
+              <button class="btn btn-edit mt-3" @click="editPaket(paketwisata)">
                 Edit Paket
               </button>
               <button
@@ -340,6 +337,7 @@ export default {
       paket: [],
       kota: "",
       tempat: "",
+      twisata: "",
       pathContact: this.$pathApi,
       updateSubmit: false,
     };
@@ -348,6 +346,7 @@ export default {
     this.load();
     this.loadkota();
     this.loadWisata();
+    this.getWisata();
   },
   methods: {
     showModal() {
@@ -498,6 +497,23 @@ export default {
         console.log(e);
       }
     },
+    async getWisata() {
+      try {
+        const twisata = await axios.get(
+          this.$pathApi + "api/dashboard/paketwisata/3",
+          {
+            headers: {
+              "ngrok-skip-browser-warning": 1,
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+
+        this.twisata = twisata.data;
+      } catch (e) {
+        console.log(e);
+      }
+    },
     async addWisata() {
       try {
         await axios.post(
@@ -529,13 +545,27 @@ export default {
           });
       }
     },
+    delwisata(delwisata) {
+      if (confirm("Apa kamu yakin ingin menghapus ?")) {
+        axios
+          .delete(this.$pathApi + "api/dashboard/paketwisata/" + delwisata.id, {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            this.load();
+            console.log(res);
+          });
+      }
+    },
     async cariPaket() {
       try {
         if (this.cari == "") {
           this.load();
         } else {
           const cari = await axios.get(
-            this.$pathApi + "api/dashboard/paket/" + this.cari,
+            this.$pathApi + "api/dashboard/paket/search/" + this.cari,
             {
               headers: {
                 "ngrok-skip-browser-warning": 1,
@@ -544,7 +574,7 @@ export default {
             }
           );
 
-          this.kota = cari.data;
+          this.paket = cari.data;
         }
       } catch (e) {
         console.log(e);

@@ -9,6 +9,13 @@
     color:#F2A73B;
 }
 
+.btn-edit:hover {
+    border:1px solid #F2A73B;
+    background:#F2A73B;
+    color:#fff;
+}
+
+
 .btn-delete {
     border:1px solid #DC3545;
     background:none;

@@ -1,5 +1,5 @@
 <template>
-  <div class="visiMisi">
+  <div class="visiMisi" style="padding-bottom: 42px">
     <div
       class="about d-flex justify-content-between"
       data-aos="fade-down"

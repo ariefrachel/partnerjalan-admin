@@ -43,7 +43,7 @@
                 />
               </b-input-group>
             </b-form-group>
-            <div v-if="form.previewImage">
+            <div>
               <div>
                 <img
                   class="preview my-3"
@@ -189,6 +189,8 @@ export default {
       this.form.id = editTestimoni.id;
       this.form.caption = editTestimoni.caption;
       this.form.previewImage = editTestimoni.previewImage;
+      // this.form.currentImage = this.$refs.file.files.item(this.form.id);
+      // this.form.previewImage = URL.createObjectURL(this.form.currentImage);
     },
     update(form) {
       UpdateService.updateTestimoni(

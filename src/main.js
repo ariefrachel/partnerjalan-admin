@@ -11,8 +11,9 @@ import '@fortawesome/fontawesome-free/js/all'
 import './assets/css/style.css'
 
 
+
 Vue.config.productionTip = false
-Vue.prototype.$pathApi = "https://8c27-175-158-53-206.ap.ngrok.io/"
+Vue.prototype.$pathApi = "https://d08f-103-191-109-11.ap.ngrok.io/"
 
 import AOS from 'aos';
 import 'aos/dist/aos.css'; 
