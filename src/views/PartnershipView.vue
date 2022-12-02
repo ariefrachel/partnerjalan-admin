@@ -84,7 +84,7 @@
         >
           <div class="partnerLogo d-flex align-items-center">
             <img
-              :src="pathPartner + partner.path"
+              :src="require(`https://f189-114-5-216-179.ap.ngrok.io/${partner.path})`"
               class="card-img-top"
               alt="..."
             />
