@@ -123,7 +123,7 @@ export default {
           this.$pathApi + "api/dashboard/infoperusahaan",
           {
             headers: {
-              "ngrok-skip-browser-warning": 1,
+              "Bypass-Tunnel-Reminder": 1,
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }

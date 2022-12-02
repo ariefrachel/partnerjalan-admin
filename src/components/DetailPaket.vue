@@ -66,7 +66,7 @@ export default {
           this.$pathApi + "api/dashboard/paket/" + this.$route.params.id,
           {
             headers: {
-              "ngrok-skip-browser-warning": 1,
+              "Bypass-Tunnel-Reminder": 1,
             },
           }
         );

@@ -13,7 +13,8 @@ import './assets/css/style.css'
 
 
 Vue.config.productionTip = false
-Vue.prototype.$pathApi = "https://88f8-103-191-109-11.ap.ngrok.io/"
+Vue.prototype.$pathApi = "https://sad-laws-rescue-103-191-109-11.loca.lt/"
+
 
 import AOS from 'aos';
 import 'aos/dist/aos.css'; 

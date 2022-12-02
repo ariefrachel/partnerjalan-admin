@@ -458,7 +458,7 @@ export default {
       try {
         const paket = await axios.get(this.$pathApi + "api/dashboard/paket", {
           headers: {
-            "ngrok-skip-browser-warning": 1,
+            "Bypass-Tunnel-Reminder": 1,
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
@@ -473,7 +473,7 @@ export default {
       try {
         const kota = await axios.get(this.$pathApi + "api/dashboard/kota", {
           headers: {
-            "ngrok-skip-browser-warning": 1,
+            "Bypass-Tunnel-Reminder": 1,
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
@@ -487,7 +487,7 @@ export default {
       try {
         const wisata = await axios.get(this.$pathApi + "api/dashboard/wisata", {
           headers: {
-            "ngrok-skip-browser-warning": 1,
+            "Bypass-Tunnel-Reminder": 1,
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
@@ -503,7 +503,7 @@ export default {
           this.$pathApi + "api/dashboard/paketwisata/3",
           {
             headers: {
-              "ngrok-skip-browser-warning": 1,
+              "Bypass-Tunnel-Reminder": 1,
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
@@ -568,7 +568,7 @@ export default {
             this.$pathApi + "api/dashboard/paket/search/" + this.cari,
             {
               headers: {
-                "ngrok-skip-browser-warning": 1,
+                "Bypass-Tunnel-Reminder": 1,
                 Authorization: "Bearer " + localStorage.getItem("token"),
               },
             }

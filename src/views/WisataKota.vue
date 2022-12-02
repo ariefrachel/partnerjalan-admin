@@ -200,7 +200,7 @@ export default {
       try {
         const kota = await http.get("api/dashboard/kota", {
           headers: {
-            "ngrok-skip-browser-warning": 1,
+            "Bypass-Tunnel-Reminder": 1,
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
@@ -216,7 +216,7 @@ export default {
       this.updateSubmit = true;
       this.form.id = editkota.id;
       this.form.kota = editkota.kota;
-      this.form.currentImage = editkota.currentImage;
+      this.form.previewImage = undefined;
     },
     update(form) {
       UpdateService.updateKota(form.id, this.form.currentImage, this.form.kota)
@@ -257,7 +257,7 @@ export default {
             "api/dashboard/kota/search/" + this.cari,
             {
               headers: {
-                "ngrok-skip-browser-warning": 1,
+                "Bypass-Tunnel-Reminder": 1,
                 Authorization: "Bearer " + localStorage.getItem("token"),
               },
             }
