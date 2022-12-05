@@ -13,12 +13,9 @@ import './assets/css/style.css'
 
 
 Vue.config.productionTip = false
-<<<<<<< HEAD
-Vue.prototype.$pathApi = "https://sad-laws-rescue-103-191-109-11.loca.lt/"
 
-=======
-Vue.prototype.$pathApi = "https://f189-114-5-216-179.ap.ngrok.io/"
->>>>>>> aa3f78a5be3091690272bc23e03c22035f1464b7
+Vue.prototype.$pathApi = "https://fair-animals-march-103-191-109-11.loca.lt/"
+
 
 import AOS from 'aos';
 import 'aos/dist/aos.css'; 
