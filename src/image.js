@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://a1f9-103-191-109-11.ap.ngrok.io/",
+  baseURL: "https://good-planes-retire-103-191-109-11.loca.lt/",
   headers: {
     "ngrok-skip-browser-warning": 1,
     "Content-type": "application/json"
