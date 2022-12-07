@@ -14,7 +14,7 @@ import './assets/css/style.css'
 
 Vue.config.productionTip = false
 
-Vue.prototype.$pathApi = "https://good-planes-retire-103-191-109-11.loca.lt/"
+Vue.prototype.$pathApi = "https://plain-views-cry-103-191-109-11.loca.lt/"
 
 
 import AOS from 'aos';
