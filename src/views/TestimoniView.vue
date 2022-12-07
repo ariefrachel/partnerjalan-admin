@@ -172,7 +172,7 @@ export default {
       try {
         const testimoni = await http.get("api/dashboard/testimoni", {
           headers: {
-            "Bypass-Tunnel-Reminder": 1,
+            "ngrok-skip-browser-warning": 1,
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });

@@ -239,7 +239,7 @@ export default {
           this.$pathApi + "api/dashboard/hotel",
           {
             headers: {
-              "Bypass-Tunnel-Reminder": 1,
+              "ngrok-skip-browser-warning": 1,
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }
@@ -254,7 +254,7 @@ export default {
       try {
         const kota = await axios.get(this.$pathApi + "api/dashboard/kota", {
           headers: {
-            "Bypass-Tunnel-Reminder": 1,
+            "ngrok-skip-browser-warning": 1,
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
@@ -268,7 +268,7 @@ export default {
       try {
         const paket = await axios.get(this.$pathApi + "api/dashboard/paket", {
           headers: {
-            "Bypass-Tunnel-Reminder": 1,
+            "ngrok-skip-browser-warning": 1,
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });

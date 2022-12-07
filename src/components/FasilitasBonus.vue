@@ -113,7 +113,7 @@ export default {
           this.$pathApi + "api/dashboard/fasilitas",
           {
             headers: {
-              "Bypass-Tunnel-Reminder": 1,
+              "ngrok-skip-browser-warning": 1,
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
           }

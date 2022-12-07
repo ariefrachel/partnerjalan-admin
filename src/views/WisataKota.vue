@@ -200,7 +200,7 @@ export default {
       try {
         const kota = await http.get("api/dashboard/kota", {
           headers: {
-            "Bypass-Tunnel-Reminder": 1,
+            "ngrok-skip-browser-warning": 1,
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
@@ -257,7 +257,7 @@ export default {
             "api/dashboard/kota/search/" + this.cari,
             {
               headers: {
-                "Bypass-Tunnel-Reminder": 1,
+                "ngrok-skip-browser-warning": 1,
                 Authorization: "Bearer " + localStorage.getItem("token"),
               },
             }

@@ -155,7 +155,7 @@ export default {
       try {
         const partnership = await http.get("api/user/partnership", {
           headers: {
-            "Bypass-Tunnel-Reminder": 1,
+            "ngrok-skip-browser-warning": 1,
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });

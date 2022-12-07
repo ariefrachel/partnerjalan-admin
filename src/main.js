@@ -14,7 +14,7 @@ import './assets/css/style.css'
 
 Vue.config.productionTip = false
 
-Vue.prototype.$pathApi = "https://jalan.loca.lt/"
+Vue.prototype.$pathApi = "https://c629-103-191-109-11.ap.ngrok.io/"
 
 
 import AOS from 'aos';

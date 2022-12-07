@@ -121,7 +121,7 @@ export default {
       try {
         const rekomen = await http.get("api/dashboard/recomen", {
           headers: {
-            "Bypass-Tunnel-Reminder": 1,
+            "ngrok-skip-browser-warning": 1,
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
@@ -136,7 +136,7 @@ export default {
       try {
         const kota = await http.get("api/dashboard/kota", {
           headers: {
-            "Bypass-Tunnel-Reminder": 1,
+            "ngrok-skip-browser-warning": 1,
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
