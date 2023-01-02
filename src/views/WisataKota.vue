@@ -201,13 +201,11 @@ export default {
         const kota = await http.get("api/dashboard/kota", {
           headers: {
             "ngrok-skip-browser-warning": 1,
-            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
 
         this.kota = kota.data;
       } catch (e) {
-        this.$router.push("/login");
         console.log(e);
       }
     },
